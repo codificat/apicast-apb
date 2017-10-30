@@ -1,0 +1,124 @@
+---
+version: 1.0
+name: apicast-apb
+description: An open source API gateway
+bindable: false
+async: optional
+metadata:
+  displayName: APICast (APB)
+  longDescription: This Ansible Playbook Bundle to deploy the 3scale API gateway
+  documentationUrl: https://support.3scale.net/docs
+  providerDisplayName: Red Hat, Inc.
+  console.openshift.io/iconClass: icon-load-balancer
+tags:
+  - 3scale
+  - api
+  - gateway
+plans:
+  - name: default
+    description: Default plan
+    free: true
+    metadata:
+      displayName: Default
+      longDescription: |-
+        This plan deploys a 3scale gateway ("APIcast"). You must have
+        access to an admin account in an API Managent Platform environment
+        and obtain an access token for the account management API. This
+        APB requires that token and the address of the management API
+        endpoint.
+      cost: $0.00
+    parameters:
+      - name: management_host
+        title: Hostname (and optional :port) of the account management API
+        type: string
+        value: mydomain-admin.3scale.net
+        required: true
+      - name: access_token
+        title: Access token for the Account Management API
+        type: string
+        required: true
+      - title: Deployment environment
+        default: production
+        name: environment
+        type: enum
+        enum: ['sandbox', 'production']
+        required: true
+      - name: config_loader
+        title: When to load config. At start (boot) or incoming request (lazy)
+        type: enum
+        enum: ['boot', 'lazy']
+        default: boot
+        required: true
+      - name: backend_cache_handler
+        title: How to handle and cache backend authorization responses.
+        type: enum
+        enum: ['strict', 'resilient']
+        default: strict
+        required: true
+      - name: resolver
+        title: DNS Resolver for openresty, if empty it will be autodiscovered
+        type: string
+        required: false
+      - name: log_level
+        title: Log level.
+        type: enum
+        default: notice
+        enum:
+          - debug
+          - info
+          - notice
+          - warn
+          - error
+          - crit
+          - alert
+          - emerg
+        required: true
+      - name: oauth_tokens_ttl
+        title: TTL (in seconds) of the oauth tokens created.
+        type: int
+        default: 604800
+        required: true
+      - name: service_list
+        title: Subset of services to run. Comma separated ids (eg. 42,1337)
+        type: string
+        required: false
+      - name: config_cache
+        title: >-
+          For how long to cache the downloaded configuration (seconds).
+          Can be left empty, 0 or greater than 60.
+        type: int
+        required: false
+      - name: redis_url
+        title: >-
+          Redis URL. Required for OAuth2 integration.
+          e.g. redis://PASSWORD@127.0.0.1:6379/0
+        type: string
+        required: false
+      - name: management_scope
+        title: >-
+          Scope of the Management API. At least 'status'
+          required for health checks.
+        type: enum
+        enum: ['disabled', 'status', 'debug']
+        default: status
+        required: true
+      - name: tls_verify
+        title: Enable TLS/SSL peer verification.
+        required: true
+        default: true
+        type: boolean
+      - name: response_codes
+        title: Enable logging response codes to 3scale.
+        type: boolean
+        default: false
+        required: true
+      - name: path_routing
+        title: Enable path routing. Experimental feature.
+        type: boolean
+        default: false
+        required: true
+      - name: config_file
+        title: Override JSON configuration file for the gateway
+        type: string
+        display_type: textarea
+        required: false

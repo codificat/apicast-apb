@@ -1,0 +1,11 @@
+---
+- name: APICast APB playbook to deprovision the application
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  roles:
+    - role: ansible.kubernetes-modules
+      install_python_requirements: no
+    - role: apicast
+      state: absent
+      playbook_debug: false

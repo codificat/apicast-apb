@@ -1,0 +1,14 @@
+---
+# Base name of the generated objects (deployment, service, ...)
+apicast_name: apicast
+apicast_image: registry.access.redhat.com/3scale-amp20/apicast-gateway:1.0
+apicast_replicas: 2
+state: present
+
+# Default values for optional parameters, i.e. params that are required:false
+# We need to set a value for them here to prevent references to undefined params
+resolver: "{{ lookup('env','APICAST_RESOLVER') | default('', true) }}"
+service_list: "{{ lookup('env','APICAST_SERVICE_LIST') | default('', true) }}"
+config_cache: "{{ lookup('env','APICAST_CONFIG_CACHE') | default('', true) }}"
+redis_url: "{{ lookup('env','APICAST_REDIS_URL') | default('', true) }}"
+config_file: "{{ lookup('env','APICAST_CONFIG_FILE') | default('', true) }}"
