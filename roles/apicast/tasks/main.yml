@@ -9,7 +9,7 @@
     namespace: "{{ namespace }}"
     state: "{{ state }}"
     data:
-      management_endpoint: "{{ encoded_endpoint.stdout }}"
+      managementEndpoint: "{{ encoded_endpoint.stdout }}"
 
 # TODO create a route?
 # See: https://support.3scale.net/docs/deployment-options/apicast-openshift
@@ -34,7 +34,7 @@
         valueFrom:
           secretKeyRef:
             name: "{{ apicast_name }}"
-            key: management_endpoint
+            key: managementEndpoint
       # TODO: create ConfigMap with {{ config_file }} and use it to populate
       # the THREESCALE_CONFIG_FILE env var
       #- name: THREESCALE_CONFIG_FILE
