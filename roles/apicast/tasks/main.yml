@@ -92,13 +92,13 @@
   k8s_v1_service:
     name: "{{ apicast_name }}"
     namespace: "{{ namespace }}"
-    state: present
+    state: "{{ state }}"
     selector:
       app: "{{ apicast_name }}"
     ports:
       - name: proxy
-        containerPort: 8080
+        port: 8080
         protocol: TCP
       - name: management
-        containerPort: 8090
+        port: 8090
         protocol: TCP
