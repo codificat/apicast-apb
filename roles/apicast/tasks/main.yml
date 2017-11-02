@@ -52,19 +52,19 @@
       - name: APICAST_LOG_LEVEL
         value: "{{ log_level }}"
       - name: APICAST_PATH_ROUTING_ENABLED
-        value: "{{ path_routing }}"
+        value: '"{{ path_routing }}"'
       - name: APICAST_RESPONSE_CODES
-        value: "{{ response_codes }}"
+        value: '"{{ response_codes }}"'
       - name: APICAST_CONFIGURATION_CACHE
-        value: "{{ config_cache }}"
+        value: '"{{ config_cache }}"'
       - name: REDIS_URL
         value: "{{ redis_url }}"
       - name: APICAST_OAUTH_TOKENS_TTL
-        value: "{{ oauth_tokens_ttl }}"
+        value: '"{{ oauth_tokens_ttl }}"'
       - name: APICAST_MANAGEMENT_API
         value: "{{ management_scope }}"
       - name: OPENSSL_VERIFY
-        value: "{{ tls_verify }}"
+        value: '"{{ tls_verify }}"'
       image: "{{ apicast_image }}"
       imagePullPolicy: Always
       name: "{{ apicast_name }}"
