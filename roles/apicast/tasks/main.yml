@@ -3,7 +3,7 @@
   shell: echo -n "https://{{ access_token }}@{{ management_host }}" | base64 -w 0
   register: encoded_endpoint
 
-- name: Create the secret to authenticate to the Account Management API
+- name: Secret to authenticate to the Account Management API
   k8s_v1_secret:
     name: "{{ apicast_name }}"
     namespace: "{{ namespace }}"
@@ -15,7 +15,7 @@
 # See: https://support.3scale.net/docs/deployment-options/apicast-openshift
 #      Step 3: Create routes in OpenShift console
 
-- name: Create APICast APB deployment config
+- name: APICast APB deployment config
   openshift_v1_deployment_config:
     restart_policy: Always
     replicas: "{{ apicast_replicas }}"
@@ -27,7 +27,7 @@
     spec_template_metadata_labels:
       app: "{{ apicast_name }}"
     selector:
-      deploymentconfig: "{{ apicast_name }}"
+      app: "{{ apicast_name }}"
     containers:
     - env:
       - name: THREESCALE_PORTAL_ENDPOINT
@@ -88,7 +88,7 @@
         containerPort: 8090
         protocol: TCP
 
-- name: Create APICast APB service
+- name: APICast APB service
   k8s_v1_service:
     name: "{{ apicast_name }}"
     namespace: "{{ namespace }}"
