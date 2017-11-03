@@ -1,15 +1,12 @@
 ---
-- name: Encode management endpoint
-  shell: echo -n "https://{{ access_token }}@{{ management_host }}" | base64 -w 0
-  register: encoded_endpoint
-
 - name: Secret to authenticate to the Account Management API
   k8s_v1_secret:
     name: "{{ apicast_name }}"
     namespace: "{{ namespace }}"
     state: "{{ state }}"
     data:
-      managementEndpoint: "{{ encoded_endpoint.stdout }}"
+      managementEndpoint: >-
+        {{ ("https://" + access_token + "@" + management_host) | b64encode }}
 
 # TODO create a route?
 # See: https://support.3scale.net/docs/deployment-options/apicast-openshift
