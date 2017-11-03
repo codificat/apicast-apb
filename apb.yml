@@ -37,9 +37,9 @@ plans:
         title: Access token for the Account Management API
         type: string
         required: true
-      - title: Deployment environment
+      - name: environment
+        title: Deployment environment
         default: production
-        name: environment
         type: enum
         enum: ['sandbox', 'production']
         required: true
