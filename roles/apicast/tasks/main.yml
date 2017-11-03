@@ -37,7 +37,7 @@
       #- name: THREESCALE_CONFIG_FILE
       #  value: "{{ CONFIGURATION_FILE_PATH }}"
       - name: THREESCALE_DEPLOYMENT_ENV
-        value: "{{ environment }}"
+        value: "{{ deploy_environment }}"
       - name: RESOLVER
         value: "{{ resolver }}"
       - name: APICAST_SERVICES

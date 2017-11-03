@@ -37,11 +37,11 @@ plans:
         title: Access token for the Account Management API
         type: string
         required: true
-      - name: environment
+      - name: deploy_environment
         title: Deployment environment
         default: production
         type: enum
-        enum: ['sandbox', 'production']
+        enum: ['production', 'sandbox']
         required: true
       - name: config_loader
         title: When to load config. At start (boot) or incoming request (lazy)

@@ -21,7 +21,7 @@ _apb_plan_id: default
 namespace: "{{ lookup('env','NAMESPACE') | default(apicast_name, true) }}"
 backend_cache_handler: strict
 config_loader: boot
-environment: production
+deploy_environment: production
 log_level: notice
 management_scope: status
 oauth_tokens_ttl: 604800

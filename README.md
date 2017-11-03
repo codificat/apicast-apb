@@ -14,7 +14,7 @@ Name                  | Requred | Default    | Description                      
 ----------------------|---------|------------|------------------------------------------------------|
 management_host       | Yes     | -          | 3scale management hostname, e.g. my-admin.3scale.net |
 access_token          | Yes     | -          | 3scale management access token                       |
-environment           | Yes     | production | Deployment environment {sandbox, production}         |
+deploy_environment    | Yes     | production | Deployment environment {sandbox, production}         |
 config_loader         | Yes     | boot       | When to load config {boot, lazy}                     |
 backend_cache_handler | Yes     | strict     | How to handle cache auth {strict, resilient}         |
 resolver              | No      | -          | DNS Resolver for openresty                           |
