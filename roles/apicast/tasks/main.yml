@@ -8,9 +8,9 @@
       managementEndpoint: >-
         {{ ("https://" + access_token + "@" + management_host) | b64encode }}
 
-# TODO create a route?
-# See: https://support.3scale.net/docs/deployment-options/apicast-openshift
-#      Step 3: Create routes in OpenShift console
+- include: routes.yml
+  # FIXME: make it work during deprovision as well
+  when: state == 'present'
 
 - name: APICast APB deployment config
   openshift_v1_deployment_config:
@@ -90,6 +90,8 @@
     name: "{{ apicast_name }}"
     namespace: "{{ namespace }}"
     state: "{{ state }}"
+    labels:
+      app: "{{ apicast_name }}"
     selector:
       app: "{{ apicast_name }}"
     ports:

@@ -1,0 +1,91 @@
+# TODO create a route?
+# See: https://support.3scale.net/docs/deployment-options/apicast-openshift
+#      Step 3: Create routes in OpenShift console
+---
+- name: Set Management API endpoint
+  set_fact:
+    api: https://{{ management_host }}/admin/api
+
+- name: Get service list
+  uri:
+    url: "{{ api }}/services.xml"
+    user: "{{ access_token }}"
+    force_basic_auth: yes
+    method: GET
+    return_content: yes
+    # FIXME: why is cert validation failing?
+    validate_certs: no
+  register: services_xml
+
+# - name: DEBUG print service XML
+#   debug:
+#     var: services_xml
+
+- name: Find service IDs
+  xml:
+    xmlstring: "{{ services_xml.content }}"
+    xpath: /services/service/id
+    content: text
+  register: service_ids
+
+# - name: DEBUG print service IDs
+#   debug:
+#     var: service_ids
+
+# TODO: filter by service list param
+- name: Get proxy config of services
+  uri:
+    url: "{{ api }}/services/{{ item.id }}/proxy.xml"
+    user: "{{ access_token }}"
+    force_basic_auth: yes
+    method: GET
+    return_content: yes
+    # FIXME: why is cert validation failing?
+    validate_certs: no
+  with_items: "{{ service_ids.matches }}"
+  register: proxy_configs
+
+# - name: DEBUG print proxy config
+#   debug:
+#     var: proxy_configs.results
+
+# TODO: check the sandbox/prod param to select which endpoint
+- name: Parse proxy configs to obtain public service endpoints
+  xml:
+    xmlstring: "{{ item.content }}"
+    xpath: /proxy/endpoint
+    content: text
+  with_items: "{{ proxy_configs.results }}"
+  register: service_endpoints
+
+# - name: DEBUG print service endpoints
+#   debug:
+#     var: service_endpoints
+
+- name: Extract hostnames from service endpoints
+  set_fact:
+    host: >-
+      {{ item.matches[0].endpoint |
+      regex_replace('^http[s]*://', '') |
+      regex_replace(':\d+$', '')
+      }}
+  with_items: "{{ service_endpoints.results }}"
+  register: service_hostnames
+
+# - name: DEBUG print hostnames
+#   debug:
+#     var: service_hostnames
+
+- name: Create routes for service hostnames
+  openshift_v1_route:
+    name: "{{ item }}"
+    namespace: "{{ namespace }}"
+    state: "{{ state }}"
+    labels:
+      app: "{{ apicast_name }}"
+      service: "{{ apicast_name }}"
+    spec_to_name: "{{ apicast_name }}"
+    spec_port_target_port: 8080
+    spec_host: "{{ item }}"
+  with_items: >-
+     {{ service_hostnames.results | map(attribute='ansible_facts.host') | list }}
