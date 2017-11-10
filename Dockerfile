@@ -71,4 +71,8 @@ ZWEKICAgICAgICByZXF1aXJlZDogZmFsc2UK"
 
 COPY playbooks /opt/apb/actions
 COPY roles /opt/ansible/roles
+
+# The xml ansible module requires the lxml python library installed
+RUN yum install -y python-lxml && yum clean all
+
 USER apb
