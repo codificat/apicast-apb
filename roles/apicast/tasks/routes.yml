@@ -85,7 +85,7 @@
       app: "{{ apicast_name }}"
       service: "{{ apicast_name }}"
     spec_to_name: "{{ apicast_name }}"
-    spec_port_target_port: 8080
+    spec_port_target_port: proxy
     spec_host: "{{ item }}"
   with_items: >-
      {{ service_hostnames.results | map(attribute='ansible_facts.host') | list }}
