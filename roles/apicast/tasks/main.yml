@@ -8,10 +8,6 @@
       managementEndpoint: >-
         {{ ("https://" + access_token + "@" + management_host) | b64encode }}
 
-- include: routes.yml
-  # FIXME: make it work during deprovision as well
-  when: state == 'present'
-
 - name: APICast APB deployment config
   openshift_v1_deployment_config:
     restart_policy: Always
@@ -101,3 +97,7 @@
       - name: management
         port: 8090
         protocol: TCP
+
+- include: routes.yml
+  # FIXME: make it work during deprovision as well
+  when: state == 'present'
