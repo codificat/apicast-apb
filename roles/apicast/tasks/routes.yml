@@ -10,8 +10,7 @@
     force_basic_auth: yes
     method: GET
     return_content: yes
-    # FIXME: why is cert validation failing?
-    validate_certs: no
+    validate_certs: yes
   register: services_xml
 
 - name: Find service IDs
@@ -29,8 +28,7 @@
     force_basic_auth: yes
     method: GET
     return_content: yes
-    # FIXME: why is cert validation failing?
-    validate_certs: no
+    validate_certs: yes
   with_items: "{{ service_ids.matches }}"
   register: proxy_configs
 
