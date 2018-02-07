@@ -5,7 +5,7 @@ description: An open source API gateway
 bindable: false
 async: optional
 metadata:
-  displayName: APICast (APB)
+  displayName: APIcast (APB)
   longDescription: This Ansible Playbook Bundle to deploy the 3scale API gateway
   documentationUrl: https://support.3scale.net/docs
   providerDisplayName: Red Hat, Inc.

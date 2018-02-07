@@ -1,5 +1,5 @@
 ---
-- name: APICast APB playbook to provision the application
+- name: APIcast APB playbook to provision the application
   hosts: localhost
   gather_facts: false
   connection: local
