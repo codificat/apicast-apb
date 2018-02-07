@@ -1,0 +1,3 @@
+---
+endpoint_name: "{{ 'endpoint' if deploy_environment=='production' else 'sandbox_endpoint' }}"
+endpoint_xpath: /proxy/{{ endpoint_name }}

@@ -2,7 +2,6 @@
 # Base name of the generated objects (deployment, service, ...)
 apicast_name: "{{ lookup('env','APICAST_NAME') | default('apicast', true) }}"
 apicast_image: registry.access.redhat.com/3scale-amp20/apicast-gateway:1.0
-apicast_replicas: 2
 state: present
 
 # Default values for optional parameters, i.e. params that are required:false
@@ -28,3 +27,4 @@ oauth_tokens_ttl: 604800
 path_routing: false
 response_codes: false
 tls_verify: true
+apicast_replicas: "{{ 2 if deploy_environment=='production' else 1 }}"

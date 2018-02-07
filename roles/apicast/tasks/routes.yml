@@ -32,11 +32,10 @@
   with_items: "{{ service_ids.matches }}"
   register: proxy_configs
 
-# TODO: check the sandbox/prod param to select which endpoint
 - name: Parse proxy configs to obtain public service endpoints
   xml:
     xmlstring: "{{ item.content }}"
-    xpath: /proxy/endpoint
+    xpath: "{{ endpoint_xpath }}"
     content: text
   with_items: "{{ proxy_configs.results }}"
   register: service_endpoints
@@ -44,13 +43,14 @@
 - name: Extract hostnames from service endpoints
   set_fact:
     host: >-
-      {{ item.matches[0].endpoint |
+      {{ item.matches | map(attribute=endpoint_name) | join |
       regex_replace('^http[s]*://', '') |
       regex_replace(':\d+$', '')
       }}
   with_items: "{{ service_endpoints.results }}"
   register: service_hostnames
 
+# TODO: secure routes
 - name: Create routes for service hostnames
   openshift_v1_route:
     name: "{{ item }}"
