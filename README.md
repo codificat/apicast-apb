@@ -50,22 +50,31 @@ secrets.
 
 ## How to Test the APIcast gateway APB
 
+### Using the apb tool
+
+From within the APB's directory you can run:
+
+    apb run --project myproject
+
+The tool will interactively ask you for the values of the different parameters.
+Note that you must at least provide the details for 3scale management API via
+the `management_host` and `access_token` parameters.
+
+### Using Docker
+
 You must provide OpenShift's API URL and authentication token, as well as the
 3scale management hostname and admin access token:
 
-    TOKEN="$(oc whoami -t)"      # You must have logged in beforehand
-    SERVER="https://openshift.example.com:443"   # Your OpenShift API
     APICAST_HOST="my-admin.3scale.net"  # Your 3scale management host
     APICAST_TOKEN="17ab...cafe"         # Your 3scale management token
 
 with that, you can:
 
-    docker run \
-        -e OPENSHIFT_TARGET=${SERVER} \
-        -e OPENSHIFT_TOKEN=${TOKEN} \
+    docker run -u $(id -u) -v ~/.kube:/opt/apb/.kube:Z \
         apicast-apb provision \
-        --extra-vars management_host=${APICAST_HOST} \
-        --extra-vars access_token=${APICAST_TOKEN}
+        -e management_host=${APICAST_HOST} \
+        -e access_token=${APICAST_TOKEN}
 
-You can set values for any of the parameters of the APB with additional
-`--extra-vars` arguments.
+You can set values for any of the parameters of the APB with additional `-e`
+arguments. For example you might want to specify `-e namespace=myproject` (the
+default target project is `apicast`).
